@@ -1,33 +1,38 @@
 package com.example.tranquilitynewsapp.ui.home
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tranquilitynewsapp.data.api.TestRepo
+import com.example.tranquilitynewsapp.data.api.repo.NewsRepository
 import com.example.tranquilitynewsapp.models.NewsResponse
+import com.example.tranquilitynewsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: TestRepo): ViewModel() {
-    private val _all = MutableLiveData<NewsResponse>()
-    val all: LiveData<NewsResponse>
-        get() = _all
+class HomeViewModel @Inject constructor(
+    private val newsRepository: NewsRepository
+    ): ViewModel() {
+
+    val newsLiveData: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    private val newsPage = 1
 
     init {
-        getAll()
+        getNews("ua")
     }
 
-    private fun getAll() = viewModelScope.launch {
-        repository.getAll().let {
-            if (it.isSuccessful) {
-                _all.postValue(it.body())
+    private fun getNews(countryCode: String) =
+        viewModelScope.launch {
+            newsLiveData.postValue(Resource.Loading())
+            val response = newsRepository.getNews(countryCode = countryCode, pageNumber = newsPage)
+            if (response!!.isSuccessful) {
+                response.body().let { res ->
+                    newsLiveData.postValue(Resource.Success(res))
+                }
             } else {
-                Log.d("AAA", "Failed gelAll: ${it.errorBody()}")
+                newsLiveData.postValue(Resource.Error(message = response.message()))
             }
         }
-    }
+
 }
