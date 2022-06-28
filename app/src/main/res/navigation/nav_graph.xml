@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/homeFragment"
         android:name="com.example.tranquilitynewsapp.ui.home.HomeFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_home" >
@@ -17,12 +17,19 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="article"
+            app:argType="com.example.tranquilitynewsapp.models.Article" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.tranquilitynewsapp.ui.details.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="article"
+            app:argType="com.example.tranquilitynewsapp.models.Article" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.tranquilitynewsapp.ui.favorite.FavoriteFragment"
@@ -35,6 +42,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="article"
+            app:argType="com.example.tranquilitynewsapp.models.Article" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -48,5 +58,8 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="article"
+            app:argType="com.example.tranquilitynewsapp.models.Article" />
     </fragment>
 </navigation>

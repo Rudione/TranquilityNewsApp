@@ -13,11 +13,11 @@ import com.example.tranquilitynewsapp.R
 import com.example.tranquilitynewsapp.models.Article
 import kotlinx.android.synthetic.main.item_article.view.*
 
-class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder>() {
 
-    inner class NewsAdapterViewHolder(view: View): RecyclerView.ViewHolder(view)
+    inner class NewsAdapterViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    private val callback = object : DiffUtil.ItemCallback<Article>()  {
+    private val callback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
         }
@@ -38,13 +38,14 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder>() {
     override fun onBindViewHolder(holder: NewsAdapterViewHolder, position: Int) {
         val article = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this)
-                .load(article.urlToImage)
-                .into(article_image)
-
+            Glide.with(this).load(article.urlToImage).into(article_image)
             article_image.clipToOutline = true
             article_title.text = article.title
             article_date.text = article.publishedAt
+
+            setOnClickListener {
+                onItemClickListener?.let { it(article) }
+            }
         }
     }
 
