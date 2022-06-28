@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
+    private val mBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(5000)
             _binding = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+            setContentView(mBinding.root)
             bottom_nav_menu.setupWithNavController(
                 navController = nav_host_fragment.findNavController()
             )

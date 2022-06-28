@@ -1,4 +1,4 @@
-package com.example.tranquilitynewsapp.ui.home
+package com.example.tranquilitynewsapp.ui.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,25 +11,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ) : ViewModel() {
-    val newsLiveData: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    private val newsPage = 1
+    val searchNewsLiveData: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    private val searchPageNum = 1
 
     init {
-        getNews("ua")
+        getSearchNews("")
     }
 
-    private fun getNews(countryCode: String) = viewModelScope.launch {
-        newsLiveData.postValue(Resource.Loading())
-        val response = newsRepository.getNews(countryCode = countryCode, pageNumber = newsPage)
+    fun getSearchNews(query: String) = viewModelScope.launch {
+        searchNewsLiveData.postValue(Resource.Loading())
+        val response = newsRepository.getSearchNews(query, pageNumber = searchPageNum)
         if (response.isSuccessful) {
             response.body().let { res ->
-                newsLiveData.postValue(Resource.Success(res))
+                searchNewsLiveData.postValue(Resource.Success(res))
             }
         } else {
-            newsLiveData.postValue(Resource.Error(message = response.message()))
+            searchNewsLiveData.postValue(Resource.Error(message = response.message()))
         }
     }
 }
