@@ -10,19 +10,22 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.tranquilitynewsapp.R
 import com.example.tranquilitynewsapp.databinding.FragmentDetailsBinding
 import com.example.tranquilitynewsapp.ui.search.SearchFragmentArgs
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
 
-
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val mBinding get() = _binding!!
     private val bundleArgs: SearchFragmentArgs by navArgs()
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +44,10 @@ class DetailsFragment : Fragment() {
                 Glide.with(this)
                     .load(article.urlToImage)
                     .into(mBinding.headerImage)
+            }
+
+            mBinding.iconFavorite.setOnClickListener {
+                viewModel.saveArticle(article)
             }
 
             mBinding.headerImage.clipToOutline = true

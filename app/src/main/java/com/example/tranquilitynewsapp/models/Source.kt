@@ -1,6 +1,0 @@
-package com.example.tranquilitynewsapp.models
-
-data class Source(
-    val id: Any?,
-    val name: String
-)
